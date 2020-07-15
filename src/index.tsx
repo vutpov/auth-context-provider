@@ -1,7 +1,8 @@
 import React from 'react'
 import BaseContextProvider, {
   baseUseContext,
-  baseWithContext
+  baseWithContext,
+  baseContextWrap
 } from 'base-context-provider'
 
 export interface AuthContextProps {
@@ -93,6 +94,8 @@ class AuthContextProvider extends BaseContextProvider<
 AuthContextProvider.defaultProps = {
   storageType: 'localStorage'
 }
+
+export const wrapAuthContext = baseContextWrap(AuthContextProvider)
 
 export const useAuthContext = baseUseContext(Context)
 

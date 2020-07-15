@@ -1,6 +1,5 @@
 import React from 'react'
-
-import AuthContextProvider from 'auth-context-provider'
+import {wrapAuthContext} from 'auth-context-provider'
 import FormLogin from './FormLogin'
 
 const App = () => {
@@ -9,10 +8,7 @@ const App = () => {
 
 const authUrl = 'http://localhost:8080/authenticate'
 
-const EnhancedApp = () => {
-  return <AuthContextProvider authUrl={authUrl}>
-    <App />
-  </AuthContextProvider>
-}
+export default  wrapAuthContext(App, {
+  authUrl
+})
 
-export default EnhancedApp
