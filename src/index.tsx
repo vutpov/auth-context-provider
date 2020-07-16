@@ -4,6 +4,8 @@ import BaseContextProvider, {
   baseWithContext,
   baseContextWrap
 } from 'base-context-provider'
+import { LocalStorageToken, TokenInstance } from './TokenInstance'
+import ResponseError from './ResponseError'
 
 export interface AuthContextProps {
   authUrl: string
@@ -14,7 +16,9 @@ export interface AuthState<T> {
   isLogin: boolean
   isFetchingUser: boolean
   user: T
+  tokenInstance?: TokenInstance
 }
+
 
 const Context = React.createContext({})
 
@@ -22,7 +26,7 @@ class AuthContextProvider extends BaseContextProvider<
   AuthContextProps,
   AuthState<any>
 > {
-  state = {
+  state: AuthState<any> = {
     isLogin: false,
     isFetchingUser: false,
     user: {
@@ -30,16 +34,24 @@ class AuthContextProvider extends BaseContextProvider<
     }
   }
 
+  constructor(props: AuthContextProps) {
+    super(props)
+
+    this.state.tokenInstance = new LocalStorageToken()
+  }
+
   getContext() {
     return Context
   }
 
-  fetchUser: (password: string) => void = async (password) => {
+  fetchUser: (username: string, password: string) => void = async (
+    username,
+    password
+  ) => {
     this.setState({
       isFetchingUser: true
     })
     const { authUrl } = this.props
-    const { username } = this.state.user
 
     const response = await fetch(authUrl, {
       method: 'POST',
@@ -50,24 +62,35 @@ class AuthContextProvider extends BaseContextProvider<
     })
 
     const data = await response.json()
-    localStorage.setItem('token', data.token)
+    if (response.status >= 400) {
+      return Promise.reject(new ResponseError("Error while fetching data", data ))
+    }
+    // eslint-disable-next-line no-unused-expressions
+    this.state.tokenInstance?.setToken(data.token)
+
+    this.setState((oldState) => {
+      return {
+        ...oldState,
+        user: {
+          ...oldState.user,
+          username
+        },
+        isLogin: true,
+        isFetchingUser: false
+      }
+    })
+
+    return Promise.resolve("")
   }
 
-  login = ({ username, password }: { username: string; password: string }) => {
-    this.setState(
-      (oldState) => {
-        return {
-          ...oldState,
-          user: {
-            ...oldState.user,
-            username
-          }
-        }
-      },
-      () => {
-        this.fetchUser(password)
-      }
-    )
+  login = async ({
+    username,
+    password
+  }: {
+    username: string
+    password: string
+  }) => {
+    return this.fetchUser(username, password)
   }
 
   logout = async () => {
@@ -77,15 +100,20 @@ class AuthContextProvider extends BaseContextProvider<
         username: ''
       }
     })
-
+    this.state.tokenInstance?.setToken("")
     return Promise.resolve(true)
+  }
+
+  getToken = ()=>{
+    return this.state.tokenInstance?.getToken()
   }
 
   getContextReturnValue() {
     return {
       ...this.state,
       login: this.login,
-      logout: this.logout
+      logout: this.logout,
+      getToken: this.getToken
     }
   }
 }
