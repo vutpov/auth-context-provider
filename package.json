@@ -1,6 +1,6 @@
 {
   "name": "auth-context-provider",
-  "version": "1.0.1",
+  "version": "1.0.1-a",
   "description": "Made with create-react-library",
   "author": "vuthpov",
   "license": "MIT",
@@ -25,9 +25,7 @@
   },
   "peerDependencies": {
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
-  },
-  "dependencies": {
+    "react-dom": "^16.0.0",
     "base-context-provider": "https://git.cubetiqs.com/vutpov/base-context-provider.git"
   },
   "devDependencies": {
@@ -57,9 +55,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.7.5",
-    "react": "link:../akara-web/node_modules/react",
-    "react-dom": "link:../akara-web/node_modules/react-dom"
+    "typescript": "^3.7.5"
   },
   "files": [
     "dist"
