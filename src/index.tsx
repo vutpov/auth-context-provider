@@ -9,16 +9,27 @@ import ResponseError from './ResponseError'
 
 export interface AuthContextProps {
   authUrl: string
+  validateUrl: string
+  keysPropertyToValidate?: string[]
   storageType?: 'localStorage' | 'cookies'
 }
 
-export interface AuthState<T> {
-  isLogin: boolean
-  isFetchingUser: boolean
-  user: T
-  tokenInstance?: TokenInstance
+enum LoadingType {
+  'requesting token',
+  'fetching user',
+  'validating token'
 }
 
+export interface AuthLoadingInstance {
+  isLoading: boolean
+  type?: LoadingType
+}
+
+export interface AuthState<T> {
+  isAuthenticated: boolean
+  loading: AuthLoadingInstance
+  user: T
+}
 
 const Context = React.createContext({})
 
@@ -27,29 +38,36 @@ class AuthContextProvider extends BaseContextProvider<
   AuthState<any>
 > {
   state: AuthState<any> = {
-    isLogin: false,
-    isFetchingUser: false,
+    isAuthenticated: false,
+    loading: {
+      isLoading: false
+    },
     user: {
       username: ''
     }
   }
 
+  tokenInstance: TokenInstance | null | undefined = null
+
   constructor(props: AuthContextProps) {
     super(props)
 
-    this.state.tokenInstance = new LocalStorageToken()
+    this.tokenInstance = new LocalStorageToken()
   }
 
   getContext() {
     return Context
   }
 
-  fetchUser: (username: string, password: string) => void = async (
+  requestToken: (username: string, password: string) => void = async (
     username,
     password
   ) => {
     this.setState({
-      isFetchingUser: true
+      loading: {
+        isLoading: true,
+        type: LoadingType['requesting token']
+      }
     })
     const { authUrl } = this.props
 
@@ -63,10 +81,12 @@ class AuthContextProvider extends BaseContextProvider<
 
     const data = await response.json()
     if (response.status >= 400) {
-      return Promise.reject(new ResponseError("Error while fetching data", data ))
+      return Promise.reject(
+        new ResponseError('Error while fetching data', data)
+      )
     }
     // eslint-disable-next-line no-unused-expressions
-    this.state.tokenInstance?.setToken(data.token)
+    this.tokenInstance?.setToken(data.token)
 
     this.setState((oldState) => {
       return {
@@ -75,12 +95,14 @@ class AuthContextProvider extends BaseContextProvider<
           ...oldState.user,
           username
         },
-        isLogin: true,
-        isFetchingUser: false
+        isAuthenticated: true,
+        loading: {
+          isLoading: false
+        }
       }
     })
 
-    return Promise.resolve("")
+    return Promise.resolve('')
   }
 
   login = async ({
@@ -90,22 +112,22 @@ class AuthContextProvider extends BaseContextProvider<
     username: string
     password: string
   }) => {
-    return this.fetchUser(username, password)
+    return this.requestToken(username, password)
   }
 
   logout = async () => {
     this.setState({
-      isLogin: false,
+      isAuthenticated: false,
       user: {
         username: ''
       }
     })
-    this.state.tokenInstance?.setToken("")
+    this.tokenInstance?.setToken('')
     return Promise.resolve(true)
   }
 
-  getToken = ()=>{
-    return this.state.tokenInstance?.getToken()
+  getToken = () => {
+    return this.tokenInstance?.getToken()
   }
 
   getContextReturnValue() {
@@ -114,6 +136,60 @@ class AuthContextProvider extends BaseContextProvider<
       login: this.login,
       logout: this.logout,
       getToken: this.getToken
+    }
+  }
+
+  validateToken = async (token: string, addtionalDataForValidate: any) => {
+    this.setState({
+      loading: {
+        isLoading: true,
+        type: LoadingType['validating token']
+      }
+    })
+
+    const { validateUrl } = this.props
+    const bearer = 'Bearer ' + token
+
+    try {
+      const response = await fetch(validateUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: bearer,
+          credentials: 'include'
+        },
+        body: JSON.stringify(addtionalDataForValidate)
+      })
+
+      const data = await response.json()
+
+      if (response.status < 400 && data) {
+        this.setState({
+          loading: {
+            isLoading: false
+          },
+          isAuthenticated: true
+        })
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  componentDidMount() {
+    const newToken = this.tokenInstance?.getToken()
+
+    if (newToken) {
+      const { keysPropertyToValidate } = this.props
+      let data: any = {}
+
+      keysPropertyToValidate?.forEach((item) => {
+        data[item] = this.tokenInstance?.getAdditionalDataForTokenValidation(
+          item
+        )
+      })
+
+      this.validateToken(newToken, data)
     }
   }
 }

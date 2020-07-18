@@ -42,7 +42,11 @@ const FormLogin = () => {
         />
         <button type={'submit'}>Submit</button>
       </form>
-      <br/>
+      <br />
+
+      <pre>
+        {JSON.stringify(auth)}
+      </pre>
     </>
   )
 }

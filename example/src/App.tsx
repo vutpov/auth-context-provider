@@ -6,7 +6,7 @@ const App = () => {
   return <FormLogin/>
 }
 
-const authUrl = 'http://localhost:8080/authenticate'
+const authUrl = 'http://dummyspringtoken-env-1.eba-hfxxdsvk.us-east-2.elasticbeanstalk.com/authenticate'
 
 export default  wrapAuthContext(App, {
   authUrl
