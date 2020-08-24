@@ -1,6 +1,6 @@
 {
   "name": "auth-context-provider",
-  "version": "1.0.1-d",
+  "version": "1.0.1-e",
   "description": "Made with create-react-library",
   "author": "vuthpov",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "deploy": "gh-pages -d example/build"
   },
   "dependencies": {
-    "base-context-provider": "https://git.cubetiqs.com/vutpov/base-context-provider.git"
+    "base-context-provider": "https://github.com/vuthpov/base-context-provider.git"
   },
   "peerDependencies": {
     "react": "^16.0.0",
