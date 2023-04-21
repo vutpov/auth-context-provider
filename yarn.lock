@@ -2684,9 +2684,10 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-"base-context-provider@https://git.cubetiqs.com/vutpov/base-context-provider.git":
-  version "1.0.2-b"
-  resolved "https://git.cubetiqs.com/vutpov/base-context-provider.git#dc89784c2f04a2a679b6e6d0c76e0b0b2934e64d"
+"base-context-provider@https://github.com/vuthpov/base-context-provider.git":
+  version "1.0.2-c"
+  uid "79d4abbd471352e7d07d66368677d5a84ef6d2ae"
+  resolved "https://github.com/vuthpov/base-context-provider.git#79d4abbd471352e7d07d66368677d5a84ef6d2ae"
 
 base64-js@^1.0.2:
   version "1.3.1"
@@ -7557,9 +7558,9 @@ minimatch@3.0.4, minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
+  integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
 minipass-collect@^1.0.2:
   version "1.0.2"
