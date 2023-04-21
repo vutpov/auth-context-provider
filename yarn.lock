@@ -2684,9 +2684,10 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-"base-context-provider@https://git.cubetiqs.com/vutpov/base-context-provider.git":
-  version "1.0.2-b"
-  resolved "https://git.cubetiqs.com/vutpov/base-context-provider.git#dc89784c2f04a2a679b6e6d0c76e0b0b2934e64d"
+"base-context-provider@https://github.com/vuthpov/base-context-provider.git":
+  version "1.0.2-c"
+  uid "79d4abbd471352e7d07d66368677d5a84ef6d2ae"
+  resolved "https://github.com/vuthpov/base-context-provider.git#79d4abbd471352e7d07d66368677d5a84ef6d2ae"
 
 base64-js@^1.0.2:
   version "1.3.1"
@@ -3965,9 +3966,9 @@ decamelize@^1.2.0:
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 deep-equal@^1.0.1:
   version "1.1.1"
